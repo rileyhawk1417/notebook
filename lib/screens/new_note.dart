@@ -1,6 +1,7 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
 
+//MIght just remove this class entirely?
 class NewNote extends StatefulWidget {
   const NewNote({Key? key}) : super(key: key);
 
@@ -39,6 +40,7 @@ class NewNoteState extends State<NewNote> {
       body: AppFlowyEditor(
           editorState: editorState,
           editorScrollController: editorScrollController,
+          //TODO Add date modified & title
           header: const Text('Title'),
           footer: const Text('Date Modified')),
     );
