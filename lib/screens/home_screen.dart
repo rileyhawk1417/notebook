@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:note_book/components/header.dart';
-import 'package:note_book/components/notes_list.dart';
+import 'package:note_book/components/notebook_list.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return const Column(
       children: [
         HeaderBar(),
         Expanded(
-          child: NotesList(),
+          child: NoteBookList(),
         ),
       ],
     );

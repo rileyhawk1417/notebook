@@ -1,67 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
+import 'package:note_book/data/models/notes_model.dart';
+import 'package:note_book/screens/notebook/note_editor.dart';
 
-class NoteModel {
-  String title;
-  String? desc;
-  String date;
-  String note;
-  NoteModel({
-    required this.title,
-    this.desc,
-    required this.date,
-    required this.note,
-  });
-}
-
-List notesList = [
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-  NoteModel(title: 'H', note: 'Hello World', date: '20/10/23'),
-];
-
-class NotesList extends ConsumerWidget {
-  const NotesList({super.key});
+class NoteList extends StatelessWidget {
+  const NoteList({super.key, required this.noteBook, required this.noteBookID});
+  final NoteBookModel noteBook;
+  final int noteBookID;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.separated(
-        itemCount: notesList.length,
-        separatorBuilder: (context, idx) =>
-            const SizedBox(width: 50, height: 8),
-        itemBuilder: (context, count) {
-          return Slidable(
-            startActionPane: ActionPane(
-              motion: const StretchMotion(),
-              children: [
-                SlidableAction(onPressed: (context) {}, icon: Icons.archive)
-              ],
-            ),
-            endActionPane: ActionPane(
-              motion: const StretchMotion(),
-              children: [
-                SlidableAction(onPressed: (context) {}, icon: Icons.edit),
-                SlidableAction(onPressed: (context) {}, icon: Icons.delete)
-              ],
-            ),
-            child: ListTile(
-                tileColor: Colors.blue.shade400,
-                title: Text(notesList[count].title),
-                subtitle: Text(notesList[count].date),
-                trailing: const Icon(Icons.more_horiz),
-                onTap: () => {}),
-          );
-        });
+  Widget build(BuildContext context) {
+    var notesLength = noteBook.noteBooks?.length;
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(noteBook.noteBooks![index].noteTitle),
+          subtitle:
+              //TODO: Fix the chip to use a list builder as well but horizontally
+              Chip(label: Text(noteBook.noteBooks![index].tags.toString())),
+          onTap: () => Get.to(
+              () => NoteEditor(doc: noteBook.noteBooks![index].document)),
+        );
+      },
+      itemCount: notesLength,
+    );
   }
 }
