@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
 import 'package:note_book/components/notes_list.dart';
 import 'package:note_book/data/models/notes_model.dart';
-import 'package:note_book/data/riverpod/notes_state.dart';
 
 class NotesListScreen extends StatelessWidget {
   const NotesListScreen(

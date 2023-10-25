@@ -1,5 +1,4 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:isar/isar.dart';
 
 part 'notes_model.g.dart';
 
@@ -11,7 +10,16 @@ class NoteBookModel {
   List<NoteModel>? noteBooks;
   @HiveField(2)
   List<String>? tags;
-  NoteBookModel({required this.noteTitle, this.noteBooks, this.tags});
+  @HiveField(3)
+  String dateCreated;
+  @HiveField(4)
+  String dateModified;
+  NoteBookModel(
+      {required this.noteTitle,
+      this.noteBooks,
+      this.tags,
+      required this.dateCreated,
+      required this.dateModified});
 }
 
 @HiveType(typeId: 2)
@@ -22,5 +30,14 @@ class NoteModel {
   Map<String, dynamic> document;
   @HiveField(2)
   List<String>? tags;
-  NoteModel({required this.noteTitle, required this.document, this.tags});
+  @HiveField(3)
+  String dateCreated;
+  @HiveField(4)
+  String dateModified;
+  NoteModel(
+      {required this.noteTitle,
+      required this.document,
+      this.tags,
+      required this.dateCreated,
+      required this.dateModified});
 }

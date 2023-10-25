@@ -1,8 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_book/data/default_note.dart';
 import 'package:note_book/data/models/notes_model.dart';
+import 'package:note_book/data/utils/date_convertor.dart';
 
-String noteBox = 'notebook_hive_box';
+String noteBox = 'notebook_box';
 String noteBookLabel = 'notes';
 
 class NoteClass {
@@ -18,11 +19,21 @@ class NoteClass {
   }
 
   Future<void> createSampleData() async {
-    NoteModel note1 = NoteModel(noteTitle: 'First Note', document: noteExample);
-    NoteModel note2 =
-        NoteModel(noteTitle: 'Second Note', document: note2Example);
-    NoteBookModel notebook1 =
-        NoteBookModel(noteTitle: 'First Notebook', noteBooks: [note1, note2]);
+    NoteModel note1 = NoteModel(
+        noteTitle: 'First Note',
+        document: noteExample,
+        dateCreated: todaysDateFormatted(),
+        dateModified: todaysDateFormatted());
+    NoteModel note2 = NoteModel(
+        noteTitle: 'Second Note',
+        document: note2Example,
+        dateCreated: todaysDateFormatted(),
+        dateModified: todaysDateFormatted());
+    NoteBookModel notebook1 = NoteBookModel(
+        noteTitle: 'First Notebook',
+        noteBooks: [note1, note2],
+        dateCreated: todaysDateFormatted(),
+        dateModified: todaysDateFormatted());
     _noteBookBox.add(notebook1);
   }
 
@@ -38,7 +49,8 @@ class NoteClass {
     _noteBookBox.add(notebook);
   }
 
-  void addNote(NoteModel note, String notebookName, int? index) {
+  void addNote(
+      NoteModel note, String notebookName, int? index, String dateCreated) {
     _noteBookBox.values.where((notebook) {
       if (notebook.noteTitle == notebookName) {
         notebook.noteBooks?.add(note);
@@ -47,8 +59,11 @@ class NoteClass {
         // _noteBookBox.add(notebook);
         return true;
       } else {
-        NoteBookModel untitledNoteBook =
-            NoteBookModel(noteTitle: 'untitled', noteBooks: [note]);
+        NoteBookModel untitledNoteBook = NoteBookModel(
+            noteTitle: 'untitled',
+            noteBooks: [note],
+            dateCreated: dateCreated,
+            dateModified: todaysDateFormatted());
         _noteBookBox.add(untitledNoteBook);
       }
       return false;
@@ -66,6 +81,13 @@ class NoteClass {
       }
       return false;
     });
+  }
+
+  void saveNote(int noteBookID, int noteId, Map<String, dynamic> doc) {
+    var notebook = _noteBookBox.getAt(noteBookID);
+    var note = notebook?.noteBooks?.elementAt(noteId);
+    note?.document = doc;
+    _noteBookBox.putAt(noteBookID, notebook!);
   }
 
   void deleteNote(int noteBookIndex, int noteIndex) {

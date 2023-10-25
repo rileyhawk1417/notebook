@@ -1,0 +1,52 @@
+String todaysDateFormatted() {
+  var dateTimeObj = DateTime.now();
+
+  String year = dateTimeObj.year.toString();
+
+  String month = dateTimeObj.month.toString();
+  if (month.length == 1) {
+    month = '0$month';
+  }
+
+  String day = dateTimeObj.day.toString();
+  if (day.length == 1) {
+    day = '0$day';
+  }
+
+  String yyyymmdd = year + month + day;
+  return yyyymmdd;
+}
+
+DateTime createDateTimeObj(String yyyymmdd) {
+  int yyyy = int.parse(yyyymmdd.substring(0, 4));
+  int mm = int.parse(yyyymmdd.substring(4, 6));
+  int dd = int.parse(yyyymmdd.substring(6, 8));
+
+  DateTime dateTimeObj = DateTime(yyyy, mm, dd);
+  return dateTimeObj;
+}
+
+String convertDateTimeToString(DateTime dateTime) {
+  String year = dateTime.year.toString();
+  String month = dateTime.month.toString();
+
+  if (month.length == 1) {
+    month = '0$month';
+  }
+
+  String day = dateTime.day.toString();
+  if (day.length == 1) {
+    day = '0$day';
+  }
+
+  String yyyymmdd = year + month + day;
+  return yyyymmdd;
+}
+
+String representDateTime(String dateTime) {
+  var year = dateTime.substring(0, 4);
+  var month = dateTime.substring(4, 6);
+  var day = dateTime.substring(6, 8);
+  var formattedDate = '$year/$month/$day';
+  return formattedDate;
+}

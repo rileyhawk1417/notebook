@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_book/data/models/notes_class.dart';
 import 'package:note_book/data/models/notes_model.dart';
 import 'package:note_book/data/riverpod/notes_state.dart';
+import 'package:note_book/data/utils/date_convertor.dart';
 import 'package:note_book/screens/notebook/notes.dart';
 
 class NoteBookList extends ConsumerWidget {
@@ -42,7 +43,20 @@ class NoteBookList extends ConsumerWidget {
             ),
             child: ListTile(
                 tileColor: Colors.blue.shade400,
-                title: Text(_noteBook.noteTitle),
+                title: Row(
+                  children: [
+                    //TODO: Replace with a custom svg icon later
+                    const Icon(Icons.folder),
+                    const SizedBox(width: 10),
+                    Text(_noteBook.noteTitle)
+                  ],
+                ),
+                subtitle: Column(children: [
+                  Text(
+                      'Date Created: ${representDateTime(_noteBook.dateCreated)}'),
+                  Text(
+                      'Date Modified: ${representDateTime(_noteBook.dateModified)}')
+                ]),
                 /*
                 subtitle: Text(_note),
                 trailing: const Icon(Icons.more_horiz),
