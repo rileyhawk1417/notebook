@@ -13,12 +13,12 @@ class NoteEditor extends ConsumerWidget {
       required this.doc,
       required this.title,
       this.dateModified,
-      required this.noteBookID,
+      this.noteBookID,
       required this.noteId});
   final Map<String, dynamic> doc;
   final String title;
   final String? dateModified;
-  final int noteBookID;
+  final int? noteBookID;
   final int noteId;
 
   @override
@@ -29,25 +29,20 @@ class NoteEditor extends ConsumerWidget {
             Map<String, dynamic>.from(json.decode(_encodedNote))));
     final editorScrollController =
         EditorScrollController(editorState: editorState);
-    //NOTE: Trigger timer only when widget is open
-    //NOTE: Figure out a way to use the auto dispose function
-    /*
-    var _autoSave = Timer.periodic(const Duration(seconds: 5), (timer) {
-      print('hi');
-      FutureProvider.autoDispose((ref) async {
-        ref.onDispose(() {
-          timer.cancel();
-        });
-
-        ref.keepAlive();
-      });
-    });
-    */
+    Timer? _autoSave;
     void autoSave() {
       ref
           .watch(noteBookController)
-          .saveNote(noteBookID, noteId, editorState.document.toJson());
+          .saveNote(noteBookID!, noteId, editorState.document.toJson());
     }
+
+    _autoSave = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (context.mounted) {
+        autoSave();
+      } else {
+        timer.cancel();
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
