@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:note_book/main.dart';
 import 'package:note_book/screens/about.dart';
 import 'package:note_book/screens/archived.dart';
 import 'package:note_book/screens/favorites.dart';
+import 'package:note_book/screens/notes_screen.dart';
 import 'package:note_book/screens/settings.dart';
 
 class SideDrawer extends StatelessWidget {
@@ -11,6 +15,8 @@ class SideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    File noteBookImg = File('assets/images/note_book_bookmark.svg');
+    File noteImg = File('assets/images/note.svg');
     return Drawer(
       child: Container(
           color: Colors.blue.shade200,
@@ -18,9 +24,16 @@ class SideDrawer extends StatelessWidget {
             children: [
               const DrawerHeader(child: Icon(Icons.notes)),
               ListTile(
-                leading: const Icon(Icons.notes),
-                title: const Text('Notes'),
+                leading: SizedBox(
+                    width: 20, height: 20, child: SvgPicture.file(noteImg)),
+                title: const Text('NoteBooks'),
                 onTap: () => Get.to(() => const MyHomePage(title: 'Notes')),
+              ),
+              ListTile(
+                leading: SizedBox(
+                    width: 20, height: 20, child: SvgPicture.file(noteBookImg)),
+                title: const Text('Notes'),
+                onTap: () => Get.to(() => const NotesScreen()),
               ),
               ListTile(
                   leading: const Icon(Icons.favorite),
