@@ -24,9 +24,6 @@ class NoteBookList extends ConsumerWidget {
           print(noteBookLength.length);
           int keyList = noteBookLength[index];
           NoteBookModel? _noteBook = box.get(keyList);
-          for (var i in _noteBook!.noteBooks!) {
-            print(i.noteTitle);
-          }
           return Slidable(
             startActionPane: ActionPane(
               motion: const StretchMotion(),
@@ -42,13 +39,12 @@ class NoteBookList extends ConsumerWidget {
               ],
             ),
             child: ListTile(
-                tileColor: Colors.blue.shade400,
                 title: Row(
                   children: [
-                    //TODO: Replace with a custom svg icon later
+                    //TODO: Replacblue.!.notb!.!e with a custom svg icon later
                     const Icon(Icons.folder),
                     const SizedBox(width: 10),
-                    Text(_noteBook.noteTitle)
+                    Text(_noteBook!.noteTitle)
                   ],
                 ),
                 subtitle: Column(children: [

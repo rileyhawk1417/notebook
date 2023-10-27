@@ -50,9 +50,9 @@ class NoteBookController extends ChangeNotifier {
     return _noteBookModel.loadNotes(noteBookID);
   }
 
-//TODO: Same with the one above
-  int getNoteBooksLength() {
-    return _noteBookModel.noteBookBox.keys.length;
+  //NOTE: Get every note including the ones in notebooks
+  List? getNotes() {
+    return _noteBookModel.getAllNotes();
   }
 
   void saveNote(int noteBookID, int noteId, Map<String, dynamic> doc) {

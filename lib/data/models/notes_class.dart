@@ -29,12 +29,24 @@ class NoteClass {
         document: note2Example,
         dateCreated: todaysDateFormatted(),
         dateModified: todaysDateFormatted());
+
+    NoteModel note3 = NoteModel(
+        noteTitle: 'Third Note',
+        document: note2Example,
+        dateCreated: todaysDateFormatted(),
+        dateModified: todaysDateFormatted());
     NoteBookModel notebook1 = NoteBookModel(
         noteTitle: 'First Notebook',
         noteBooks: [note1, note2],
         dateCreated: todaysDateFormatted(),
         dateModified: todaysDateFormatted());
-    _noteBookBox.add(notebook1);
+
+    NoteBookModel notebook2 = NoteBookModel(
+        noteTitle: 'Second Notebook',
+        noteBooks: [note3],
+        dateCreated: todaysDateFormatted(),
+        dateModified: todaysDateFormatted());
+    _noteBookBox.addAll([notebook1, notebook2]);
   }
 
   List<int> loadNoteBookKeys() {
@@ -43,6 +55,24 @@ class NoteClass {
 
   List<NoteModel>? loadNotes(int noteBookID) {
     return _noteBookBox.get(noteBookID)?.noteBooks;
+  }
+
+  List<dynamic>? getAllNotes() {
+    var notebookKeys = loadNoteBookKeys();
+    List<dynamic>? noteList = [];
+    for (var idx in notebookKeys) {
+      int keys = notebookKeys[idx];
+      if (_noteBookBox.get(keys)!.noteBooks!.isNotEmpty) {
+        var notes = _noteBookBox.get(keys)!.noteBooks;
+        for (var n in notes!) {
+          noteList.add(n);
+        }
+      } else {
+        noteList.add(_noteBookBox.get(keys)?.noteBooks);
+      }
+    }
+
+    return noteList.toList();
   }
 
   void addNoteBook(NoteBookModel notebook) {
