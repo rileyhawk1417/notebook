@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:note_book/data/models/notes_class.dart';
-import 'package:note_book/data/models/notes_model.dart';
-import 'package:note_book/data/riverpod/notes_state.dart';
-import 'package:note_book/data/utils/date_convertor.dart';
+import 'package:note_book/data/default_note.dart';
+import 'package:note_book/data/isar/adapters.dart';
+import 'package:note_book/data/isar/isar_service.dart';
+import 'package:note_book/data/isar/note.dart';
+import 'package:note_book/data/isar/notebook.dart';
 import 'package:note_book/screens/notebook/notes.dart';
 
 class NoteBookList extends ConsumerWidget {
@@ -14,17 +14,33 @@ class NoteBookList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final noteBookLength = ref.watch(noteBookController).syncNoteBooks();
-    final box = Hive.box<NoteBookModel>(noteBox);
+    /*
+    ref.read(noteController).saveNoteBook(NoteBook()
+      ..title = 'Sample'
+      ..dateCreated = ''
+      ..dateModified = '');
+      */
+    /*
+    ref.read(noteController).saveNote(Note()
+      ..title = 'Sample'
+      ..content = MapStringAdapter.mapDocToString(noteExample)
+      ..dateCreated = ''
+      ..dateModified = '');
+      */
+    // ref.read(noteController).watchNoteBooks();
+    final noteBooks = [];
+
+    if (noteBooks.isEmpty) {
+      return const Center(child: Text('No notebooks found'));
+    }
+
     return ListView.separated(
-        itemCount: noteBookLength!.length,
-        separatorBuilder: (context, idx) =>
-            const SizedBox(width: 50, height: 8),
+        itemCount: noteBooks.length,
+        separatorBuilder: (context, index) => const Divider(),
         itemBuilder: (context, index) {
-          print(noteBookLength.length);
-          int keyList = noteBookLength[index];
-          NoteBookModel? _noteBook = box.get(keyList);
+          final noteBook = noteBooks[index];
           return Slidable(
+            key: ValueKey(noteBook.id),
             startActionPane: ActionPane(
               motion: const StretchMotion(),
               children: [
@@ -41,24 +57,21 @@ class NoteBookList extends ConsumerWidget {
             child: ListTile(
                 title: Row(
                   children: [
-                    //TODO: Replacblue.!.notb!.!e with a custom svg icon later
                     const Icon(Icons.folder),
                     const SizedBox(width: 10),
-                    Text(_noteBook!.noteTitle)
+                    Text('${noteBook.title}$index')
                   ],
                 ),
                 subtitle: Column(children: [
-                  Text(
-                      'Date Created: ${representDateTime(_noteBook.dateCreated)}'),
-                  Text(
-                      'Date Modified: ${representDateTime(_noteBook.dateModified)}')
+                  Text('Date Created: ${noteBook.dateCreated}'),
+                  Text('Date Modified: ${noteBook.dateModified}')
                 ]),
                 /*
                 subtitle: Text(_note),
                 trailing: const Icon(Icons.more_horiz),
                 */
-                onTap: () => Get.to(() =>
-                    NotesListScreen(selectedNoteBook: _noteBook, id: index))),
+                onTap: () => Get.to(() => NotesListScreen(
+                    selectedNoteBook: noteBook, id: noteBook.id))),
           );
         });
   }

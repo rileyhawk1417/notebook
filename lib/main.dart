@@ -5,23 +5,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_book/components/drawer.dart';
+import 'package:note_book/data/isar/note.dart';
 import 'package:note_book/data/models/notes_class.dart';
 import 'package:note_book/data/models/notes_model.dart';
 import 'package:note_book/data/riverpod/notes_state.dart';
 import 'package:note_book/screens/home_screen.dart';
 import 'package:note_book/screens/new_note.dart';
+import 'package:note_book/data/isar/isar_service.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Hive.registerAdapter(NoteBookModelAdapter());
   Hive.registerAdapter(NoteModelAdapter());
   await Hive.initFlutter();
   await Hive.openBox<NoteBookModel>(noteBox);
   final noteBookServices = NoteClass();
-  await noteBookServices.prepData();
+  await IsarService.openDB();
 
-  runApp(ProviderScope(
-      overrides: [noteBookService.overrideWith((_) => noteBookServices)],
-      child: const MyApp()));
+  runApp(ProviderScope(overrides: [
+    noteBookService.overrideWith((_) => noteBookServices),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'NoteBook'),
+      home: const MyHomePage(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -49,15 +52,14 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
+        title: const Text('NoteBook'),
       ),
       body: const Center(
         child: HomeScreen(),

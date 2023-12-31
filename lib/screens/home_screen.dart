@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:note_book/components/header.dart';
 import 'package:note_book/components/notebook_list.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,7 +7,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        HeaderBar(),
+        // HeaderBar(),
         Expanded(
           child: NoteBookList(),
         ),

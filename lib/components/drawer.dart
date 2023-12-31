@@ -24,14 +24,18 @@ class SideDrawer extends StatelessWidget {
             children: [
               const DrawerHeader(child: Icon(Icons.notes)),
               ListTile(
+                /*
                 leading: SizedBox(
                     width: 20, height: 20, child: SvgPicture.file(noteImg)),
+                    */
                 title: const Text('NoteBooks'),
-                onTap: () => Get.to(() => const MyHomePage(title: 'Notes')),
+                onTap: () => Get.to(() => const MyHomePage()),
               ),
               ListTile(
+                /*
                 leading: SizedBox(
                     width: 20, height: 20, child: SvgPicture.file(noteBookImg)),
+                    */
                 title: const Text('Notes'),
                 onTap: () => Get.to(() => const NotesScreen()),
               ),

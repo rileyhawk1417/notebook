@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:note_book/components/notebook_notes_list.dart';
-import 'package:note_book/data/models/notes_model.dart';
+import 'package:note_book/data/isar/notebook.dart';
 
 class NotesListScreen extends StatelessWidget {
   const NotesListScreen(
       {super.key, required this.selectedNoteBook, required this.id});
-  final NoteBookModel selectedNoteBook;
+  final NoteBook selectedNoteBook;
   final int id;
 
   @override
@@ -13,13 +13,12 @@ class NotesListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Notes'),
+        title: const Text('NoteBooks'),
       ),
       body: NoteBookNoteList(
         noteBook: selectedNoteBook,
         noteBookID: id,
       ),
     );
-    // return ListView.separated(itemBuilder: (context, index), separatorBuilder: separatorBuilder: (context, idx) => const SizedBox(width: 50, height: 8), itemCount: );
   }
 }
